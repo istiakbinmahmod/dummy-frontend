@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   marginTop: {},
 }));
 
-export default function AssignmentSubmit() {
+export default function StudentSubmission() {
   const auth = useContext(AuthContext);
   const classes = useStyles();
   const courseID = useParams().courseID;
@@ -73,24 +73,37 @@ export default function AssignmentSubmit() {
   const getToken = localStorage.getItem("token");
 
   let url = "http://localhost:5000/api/courses/" + courseID;
-  let url2 =
-    "http://localhost:5000/api/students/get-course-assignment/" + assignmentID;
+  const uploadSubmission = async (event) => {
+    event.preventDefault();
+    let submission_file;
 
-  let url3 =
-    "http://localhost:5000/api/students/upload-submission/" + assignmentID;
+    // if (document.getElementById("assignment_file").value !== "") {
+    submission_file = document.getElementById("submission_file").files[0];
+    // assignment_file = event.target.file[0].value;
+    // }
 
-  let url4 =
-    "http://localhost:5000/api/students/get-submission/" + assignmentID;
+    console.log("yo yo");
+    alert(submission_file.value);
 
-  const [formState, inputHandler] = useForm(
-    {
-      file: {
-        value: null,
-        isValid: false,
-      },
-    },
-    false
-  );
+    try {
+      let url;
+      url =
+        "http://localhost:5000/api/students/upload-submission/" + assignmentID;
+      const formData = new FormData();
+
+      // formData.append("file", assignment_file);
+      formData.append("file", submission_file);
+
+      console.log(formData);
+      await sendRequest(url, "POST", formData, {
+        Authorization: "Bearer " + auth.token,
+      });
+      alert("file sent");
+      // navigate("/");
+    } catch (error) {
+      alert("file not sent");
+    }
+  };
 
   return (
     <>
@@ -145,81 +158,29 @@ export default function AssignmentSubmit() {
             </div>
           </nav>
           <p id="csp">Adding a new assignment or assessment</p>
-          <div className="row" id="csr">
-            <div className="col" id="csr">
-              <p id="csp1">Assignment Name:</p>
-              <textarea id="cspt2"></textarea>
+          <form encType={"multipart/form-data"}>
+            <div className="form-group">
+              {/* <label htmlFor="file">File</label> */}
+              <input
+                type="file"
+                className="form-control"
+                id="submission_file"
+                aria-describedby="submission_file"
+                placeholder="submission_file"
+                name="submission_file"
+                // defaultValue={auction.address}
+              />
             </div>
-          </div>
-          <div className="row" id="cspr">
-            <div className="col" id="cspr">
-              <p id="csp1">Description:</p>
-              <textarea id="cspt2"></textarea>
+            <div className="d-grid gap-2 col-6 mx-auto text-container">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={uploadSubmission}
+              >
+                Submit
+              </button>
             </div>
-          </div>
-          <div className="row">
-            <div className="col" id="csc">
-              <p id="csp1">Activity Instructions:</p>
-              <textarea id="cspt2"></textarea>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <p id="csp1">Upload file:</p>
-              <div className="col">
-                <div className="row" id="fsrow">
-                  <div className="col" id="fcol">
-                    <img
-                      src="assets/img/add_file.svg"
-                      id="fcim"
-                      width="16"
-                      height="16"
-                    />
-                  </div>
-                </div>
-                <div className="row" id="fsrow2">
-                  <div className="col" id="fscol2">
-                    <i
-                      className="fas fa-file-upload"
-                      data-bss-hover-animate="bounce"
-                      id="fi"
-                    ></i>
-                  </div>
-                </div>
-              </div>
-              <div className="row" id="tsr3">
-                <div className="col">
-                  <p id="tsp">Time Management:</p>
-                  <div className="row ms-lg-5" id="ts">
-                    <div className="col-md-2">
-                      <p id="tsp2">Due Date:</p>
-                    </div>
-                    <div className="col" id="tsc3">
-                      <input type="date" is="tsd" className="mb-lg-4 ms-lg-5" />
-                    </div>
-                  </div>
-                  <div className="row ms-lg-5" id="ts2">
-                    <div className="col-md-2" id="ts3">
-                      <p id="tsp3">Cut off Date:</p>
-                    </div>
-                    <div className="col" id="tsc3">
-                      <input type="date" id="tsd" className="mb-lg-4 ms-lg-5" />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col" id="tsc4">
-                    <button className="btn btn-primary" type="button" id="tsb">
-                      Save Changes
-                    </button>
-                    <button className="btn btn-primary" type="button" id="tsb2">
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </>

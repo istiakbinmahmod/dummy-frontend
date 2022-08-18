@@ -11,7 +11,7 @@ body {
   
   #cseintro {
     text-align: center;
-    background: url("../../assets/img/geninfo.jpg") no-repeat;
+    background: url("../../img/geninfo.jpg") no-repeat;
     background-size: cover;
     padding: 40px;
     margin-top: 65px;

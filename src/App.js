@@ -28,6 +28,7 @@ import CoursePageTeacher from "./Pages/Course/CoursePageTeacher";
 import CourseMaterialUpload from "./Pages/CourseMaterial/CourseMaterialUpload";
 import CourseForum from "./Pages/Forum/CourseForum";
 import CourseForumPost from "./Pages/Forum/CourseForumPost";
+import StudentSubmission from "./Pages/Submission/StudentSubmission";
 
 function App() {
   const { token, login, logout, userId, userRole } = useAuth();
@@ -73,6 +74,10 @@ function App() {
             <Route
               path="/teacher/my/course/material-upload/:courseID/"
               element={<CourseMaterialUpload />}
+            />
+            <Route
+              path="/my/course/submission/:courseID/:assignmentID"
+              element={<StudentSubmission />}
             />
             {/* <Route  */}
           </Routes>

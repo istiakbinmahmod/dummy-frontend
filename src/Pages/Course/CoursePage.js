@@ -223,7 +223,7 @@ export default function CoursePage() {
                     </a>
                     <br></br>
                     <Link
-                      to={"/my/course/" + courseID + "/" + cass._id}
+                      to={"/my/course/submission/" + courseID + "/" + cass._id}
                       style={{ textDecoration: "none" }}
                     >
                       Submit
